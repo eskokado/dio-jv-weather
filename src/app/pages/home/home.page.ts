@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
 
   doSearch() {
     const text = this.searchControl.value;
-    this.store.dispatch(fromHomeActions.changeText({ text }));
+    this.store.dispatch(fromHomeActions.loadCurrentWeather( text ));
   }
 
 }
