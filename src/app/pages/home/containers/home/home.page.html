@@ -19,4 +19,15 @@
 
   </div>
 
+  <jv-loader *ngIf="loading$ | async"></jv-loader>
+
+  <div *ngIf="!(loading$ | async) && !(error$ | async) && !!(cityWeather | async)">
+    <jv-current-weather [cityWeather]="cityWeather | async" (toggleBookmark)="onToggleBookmark()"></jv-current-weather>
+  </div>
+
+  <div *ngIf="!(loading$ | async) && (error$ | async)">
+    <a>Tentar Novamente</a>
+  </div>
+
+
 </div>
