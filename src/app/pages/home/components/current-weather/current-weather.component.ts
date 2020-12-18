@@ -1,3 +1,4 @@
+import { Weather } from './../../../../shared/models/weather.model';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Units } from 'src/app/shared/models/units.enum';
 import { CityWeather } from 'src/app/shared/models/weather.model';
@@ -17,6 +18,14 @@ export class CurrentWeatherComponent {
 
   get cityName(): string {
     return `${this.cityWeather.city.name} ${this.cityWeather.city.country}`;
+  }
+
+  get weather(): Weather {
+    return this.cityWeather.weather;
+  }
+
+  get weatherIcon(): string {
+    return `http://openweathermap.org/img/wn/${ this.weather.icon }@2x.png`;
   }
 
   onToggleBookmark() {

@@ -3,6 +3,26 @@
 
     <h2>{{ cityName }}</h2>
 
+    <div class="weather-details">
+
+      <div class="weather-icon">
+        <img [src]="weatherIcon">
+        <span>{{ weather.description }}</span>
+      </div>
+
+      <div class="weather-temp">
+        <h3>{{ weather.temp }} </h3>
+        <span>Sensação térmica: {{ weather.feelsLike }} </span>
+      </div>
+
+      <div class="weather-misc">
+        <div>Humidade: {{ weather.humidity }}%</div>
+        <div>Velocidade do vento: {{ weather.wind.speed }} m/s</div>
+      </div>
+
+    </div>
+
+
     <div class="card-actions">
       <a class="card-link" (click)="onToggleBookmark()">
         {{ isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos' }}
