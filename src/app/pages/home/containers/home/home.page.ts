@@ -10,6 +10,7 @@ import * as fromHomeSelectors from '../../state/home.selectors';
 import { CityWeather } from 'src/app/shared/models/weather.model';
 import { Bookmark } from './../../../../shared/models/bookmark.model';
 import { takeUntil } from 'rxjs/operators';
+import { Units } from 'src/app/shared/models/units.enum';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,10 @@ export class HomePage implements OnInit, OnDestroy {
   cityWeather$: Observable<CityWeather>;
   loading$: Observable<boolean>;
   error$: Observable<boolean>;
+
+  isCurrentFavorite$: Observable<boolean>;
+
+  unit$: Observable<Units>;
 
   searchControl: FormControl;
 
@@ -55,6 +60,7 @@ export class HomePage implements OnInit, OnDestroy {
     bookmark.name = this.cityWeather.city.name;
     bookmark.country = this.cityWeather.city.country;
     bookmark.coord = this.cityWeather.city.coord;
+    this.store.dispatch(fromHomeActions.toggleBookmark({ entity: bookmark }));
   }
 
   ngOnDestroy() {

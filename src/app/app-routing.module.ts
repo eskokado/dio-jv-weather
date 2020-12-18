@@ -5,7 +5,7 @@ import { BookmarksPage } from './pages/bookmarks/bookmarks.page';
 
 const routes: Routes = [
   { path: '', component: HomePage },
-  { path: 'bookmarks', component: BookmarksPage }
+  { path: 'bookmarks', component: BookmarksPage },
 ]
 
 @NgModule({
