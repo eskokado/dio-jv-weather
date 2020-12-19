@@ -1,22 +1,45 @@
-import { CityDailyWeather } from './../models/weather.model';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+
+import { Store, select } from '@ngrx/store';
 
 import { environment } from '../../../environments/environment';
 import { responseToCityDailyWeather, responseToCityWeather } from '../utils/response.utils';
 import { CityWeather } from '../models/weather.model';
+import { CityDailyWeather } from './../models/weather.model';
+import { AppState } from 'src/app/shared/state/app.reducer';
+import { Units } from 'src/app/shared/models/units.enum';
+
+import * as fromConfigSelectors from '../state/config/config.selectors';
 
 @Injectable({
   providedIn: 'root'
 })
-export class WeatherService {
+export class WeatherService implements OnDestroy {
+
+  private unit: Units;
+
+  private serviceDestroyed$ = new Subject();
 
   constructor(
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private store: Store<AppState>
+  ) {
+    store
+      .pipe(
+        select(fromConfigSelectors.selectUnitConfig),
+        takeUntil(this.serviceDestroyed$),
+      )
+      .subscribe((unit: Units) => this.unit = unit);
+  }
+
+  ngOnDestroy() {
+    this.serviceDestroyed$.next();
+    this.serviceDestroyed$.unsubscribe();
+  }
 
   getCityWeatherByQuery(query: string): Observable<CityWeather> {
     const params = new HttpParams({ fromObject: { q: query } });
@@ -52,6 +75,9 @@ export class WeatherService {
   private doGet<T>(url: string, params: HttpParams): Observable<T> {
     params = params.append('appid', environment.apiKey);
     params = params.append('lang', 'pt_br');
+    if (this.unit !== Units.SI) {
+      params = params.append('units', this.unit.toLocaleLowerCase());
+    }
     return this.http.get<T>(`https://api.openweathermap.org/data/2.5/${ url }`, { params });
   }
 }
