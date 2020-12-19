@@ -10,9 +10,13 @@ import { DetailsGuard } from './services/details.guard';
 import { detailsReducer } from './state/details.reducer';
 import { DetailsEffects } from './state/details.effects';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { DailyWeatherComponent } from './components/daily-weather/daily-weather.component';
 
 @NgModule({
-  declarations: [DetailsPage],
+  declarations: [
+    DetailsPage,
+    DailyWeatherComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild([
