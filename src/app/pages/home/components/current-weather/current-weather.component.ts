@@ -20,14 +20,6 @@ export class CurrentWeatherComponent {
     return `${this.cityWeather.city.name} ${this.cityWeather.city.country}`;
   }
 
-  get weather(): Weather {
-    return this.cityWeather.weather;
-  }
-
-  get weatherIcon(): string {
-    return `http://openweathermap.org/img/wn/${ this.weather.icon }@2x.png`;
-  }
-
   onToggleBookmark() {
     this.toggleBookmark.emit();
   }
