@@ -3,16 +3,15 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import { Observable, Subscriber } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/public_api';
 
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-
-import { CitiesService } from './../../services/cities.service';
-import { CityTypeaheadItem } from './../../models/city-typeahead-item.model';
+import { CityTypeaheadItem } from '../../models/city-typeahead-item.model';
+import { CitiesService } from '../../services/cities.service';
 
 @Component({
   selector: 'jv-cities-typeahead',
   templateUrl: './cities-typeahead.component.html',
-  styleUrls: ['./cities-typeahead.component.scss']
+  styleUrls: ['./cities-typeahead.component.scss'],
 })
 export class CitiesTypeaheadComponent implements OnInit, ControlValueAccessor {
 
@@ -25,11 +24,11 @@ export class CitiesTypeaheadComponent implements OnInit, ControlValueAccessor {
   private onTouched: () => void;
 
   constructor(private citiesService: CitiesService,
-    @Optional() @Self() public control: NgControl) {
+              @Optional() @Self() public control: NgControl) {
     control.valueAccessor = this;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dataSource$ = new Observable(
       (subscriber: Subscriber<string>) => subscriber.next(this.search)
     )
@@ -57,5 +56,4 @@ export class CitiesTypeaheadComponent implements OnInit, ControlValueAccessor {
 
   writeValue() {
   }
-
 }
