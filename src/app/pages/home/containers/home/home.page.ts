@@ -1,3 +1,4 @@
+import { CityTypeaheadItem } from './../../../../shared/models/city-typeahead-item.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -44,7 +45,12 @@ export class HomePage implements OnInit, OnDestroy {
     this.searchControlWithAutocomplete = new FormControl(undefined);
 
     this.searchControlWithAutocomplete.valueChanges
-    .subscribe(value => console.log(value));
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe((value: CityTypeaheadItem) => {
+        if (!!value) {
+          this.store.dispatch(fromHomeActions.loadCurrentWeatherById({id: value.geonameid.toString()}));
+        }
+      });
 
     this.cityWeather$ = this.store.pipe(select(fromHomeSelectors.selectCurrentWeather));
     this.cityWeather$
